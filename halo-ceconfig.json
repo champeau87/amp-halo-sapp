@@ -92,6 +92,22 @@
     }
   },
   {
+    "DisplayName": "Accept Console Commands",
+    "Category": "SAPP Settings",
+    "Description": "Allow SAPP to accept commands from the attached server console.",
+    "Keywords": "sapp,console,input,commands",
+    "FieldName": "ConsoleInput",
+    "InputType": "checkbox",
+    "IsFlagArgument": false,
+    "ParamFieldName": "console_input",
+    "IncludeInCommandLine": false,
+    "DefaultValue": "1",
+    "EnumValues": {
+      "False": "0",
+      "True": "1"
+    }
+  },
+  {
     "DisplayName": "SAPP Console Mode",
     "Category": "SAPP Settings",
     "Description": "Replace periodic sv_status output with more useful SAPP join, leave, and game messages.",

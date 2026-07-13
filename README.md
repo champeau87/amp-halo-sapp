@@ -1,84 +1,84 @@
-# AMP Halo Custom Edition + SAPP — Managed Settings v6
+# AMP Halo Custom Edition + SAPP — PTY Console v7
 
-This release keeps the working Wine/SAPP launch configuration from v5 and adds
-AMP settings panels for the most useful Halo and SAPP options.
+This release fixes the most likely cause of non-working AMP console input.
 
-## Managed in AMP
+## Why v6 could not accept commands
 
-### Halo Server
+AMP launched:
 
-- Server name
-- Maximum players
-- Public/private server listing
-- Map-cycle timeout
-- RCON password
+    /usr/bin/wine ./haloceded.exe ...
 
-### SAPP Settings
+Wine could produce output through ordinary pipes, but Halo's old Windows console
+did not receive a usable interactive terminal/input handle. As a result:
 
-- No-lead
-- SAPP console mode
-- Chat output in AMP console
-- Chat anti-spam
-- AFK kicking
-- High-ping kicking
-- SAPP logging
+- commands entered in AMP did not reach Halo;
+- AMP's `quit` shutdown command did not reach Halo;
+- AMP waited for `App.ExitTimeout=30`;
+- AMP then force-stopped the process.
 
-### Map Cycle
+## New launcher
 
-- SAPP map-cycle enablement
-- Map voting enablement
+v7 launches through the util-linux `script` command:
 
-The actual map lists remain in:
+    /usr/bin/script -qefc       "/usr/bin/wine ./haloceded.exe -path ./cg -exec ./cg/init.txt -port 2302"       /dev/null
 
-    SAPP_CE/cg/sapp/mapcycle.txt
-    SAPP_CE/cg/sapp/mapvotes.txt
+`script` allocates a pseudo-terminal and relays AMP's stdin and stdout through
+it. It is not being used to save a transcript; `/dev/null` discards that file.
 
-They should still be edited through AMP File Manager for now.
+Options:
 
-## Safety design
+- `-q`: suppress script's own start/stop messages
+- `-e`: return the child process exit code
+- `-f`: flush output promptly
+- `-c`: run the supplied command
 
-AMP edits the existing files rather than replacing them:
+## Additional managed setting
 
-    SAPP_CE/cg/init.txt
+AMP now exposes:
+
+    Accept Console Commands
+
+This writes:
+
+    console_input 1
+
+to:
+
     SAPP_CE/cg/sapp/init.txt
 
-The parsers are restricted to specific command names. Unmanaged lines such as:
+## Applying v7
 
-    load
-    mapcycle_begin
-
-should remain intact.
-
-## Applying v6 to the running instance
-
-1. Stop the Halo instance.
+1. Stop the server.
 2. Back up:
    - `SAPP_CE/cg/init.txt`
    - `SAPP_CE/cg/sapp/init.txt`
-3. Replace the files in the GitHub template repository and push to `main`.
-4. In ADS, fetch `champeau87/amp-halo-sapp:main`.
-5. On the main ADS instance list, use the instance's **Update** action to refresh
-   its Generic Module template.
-6. Open the Halo instance and review the new settings categories before starting.
-7. Change the default RCON password immediately.
-8. Start the instance.
-9. Confirm that `sv_status` works and inspect both init files to make sure the
-   settings were written once without duplicated commands.
+3. Replace the repository files with the v7 files.
+4. Push to `main`.
+5. Fetch `champeau87/amp-halo-sapp:main` in ADS.
+6. Apply the updated template to the Halo instance.
+7. Confirm **Accept Console Commands** is enabled.
+8. Start the server.
 
-Do not use the Support and Updates page for the template refresh. Generic Module
-template configurations are refreshed from the instance action on the ADS list.
+## Validation
 
-## Restart behavior
+In AMP Console, run:
 
-These settings are file-backed and are not marked for live updates. Restart the
-server after changing them.
+    sv_status
 
-## Next management layer
+Then run:
 
-After this version is validated, the next sensible additions are:
+    v
 
-- AMP player join/leave/chat recognition from real console output
-- application-ready detection instead of immediate readiness
-- custom AMP actions for status, next map, reload SAPP, and server messages
-- a safer map-cycle editor
-- admins and ban-management workflows
+Finally click Stop.
+
+Success means:
+
+- commands produce responses;
+- Stop shuts down within a few seconds instead of waiting 30 seconds;
+- the server process exits without AMP force-killing it.
+
+## Fallback
+
+If startup fails with `/usr/bin/script: No such file or directory`, the AMP Wine
+image lacks util-linux's `script` binary. That is unlikely, but in that case the
+template will need either an extra container package or a small custom image.

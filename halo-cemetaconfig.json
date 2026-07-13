@@ -29,6 +29,6 @@
     "Importable": true,
     "ConfigType": "kvp",
     "ConfigFormat": "{0} {1}",
-    "ConfigFormatRegex": "^\\s*(?<key>no_lead|sapp_console|chat_console_echo|sapp_mapcycle|mapvote|antispam|afk_kick|ping_kick|log)\\s+(?<value>-?\\d+)\\s*(?:;.*)?\\r?$"
+    "ConfigFormatRegex": "^\\s*(?<key>no_lead|console_input|sapp_console|chat_console_echo|sapp_mapcycle|mapvote|antispam|afk_kick|ping_kick|log)\\s+(?<value>-?\\d+)\\s*(?:;.*)?\\r?$"
   }
 ]
