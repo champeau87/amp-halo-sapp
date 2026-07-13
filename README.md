@@ -1,72 +1,117 @@
 # AMP Halo Custom Edition + SAPP
 
-This repository contains a custom AMP Generic Module template for running the
-Halo Custom Edition dedicated server with SAPP under Wine on Linux.
+This is an AMP Generic Module for the ready-to-run `SAPP_CE.zip` package from
+Chalwk/SPCLib.
 
-## What this template does
+## Files that belong in the repository
 
-It launches:
+- `halo-ce.kvp`
+- `halo-ceconfig.json`
+- `halo-cemetaconfig.json`
+- `halo-ceports.json`
+- `halo-ceupdates.json`
+- `manifest.json`
 
-    /usr/bin/wine ./haloceded.exe -path . -port <AMP assigned GamePort>
+`README.md` is documentation and is safe to keep in the repository.
 
-The template does not download Halo or SAPP files. Upload files you are legally
-permitted to use into the instance base directory.
+## What AMP installs
 
-## Required base-directory layout
+The first AMP Update downloads and extracts:
+
+https://github.com/Chalwk/SPCLib/releases/download/sapp-server-templates/SAPP_CE.zip
+
+The bootstrap download and Wine-prefix initialization are marked `OneShot`.
+They are intended to run once for each new AMP instance.
+
+The archive is extracted into:
+
+    halo-ce/serverfiles/
+
+The expected files include:
 
     haloceded.exe
     sapp.dll
-    strings.dll
-    init.txt
+    Strings.dll
+    run.bat
+    run.sh
+    cg/init.txt
+    cg/sapp/init.txt
     maps/
+    sapp/
 
-Use the SAPP-supplied haloceded.exe that matches the SAPP package.
+## Startup command
 
-## Install/update the template
+AMP launches the server directly rather than calling `run.sh`:
 
-1. Replace the files in the GitHub repository with these files and push them.
-2. In ADS, open Configuration > Instance Deployment.
-3. Fetch the `champeau87/amp-halo-sapp:main` configuration repository again.
-4. Refresh the browser.
-5. For the cleanest test, create a new instance and enable containerization.
-6. Upload the required server files into `halo-ce/serverfiles/`.
+    /usr/bin/wine ./haloceded.exe       -path ./cg       -exec ./cg/init.txt       -port <AMP-assigned-port>
 
-The template recommends:
+This reproduces the important behavior of the supplied launcher while allowing
+AMP to manage the port, process, console, and shutdown command.
 
-    cubecoders/ampbase:wine-stable
+## Replace the current GitHub files
 
-## Existing instance warning
+Extract this package and replace the existing module files in the repository.
+Commit and push the changes to the `main` branch.
 
-The old template created a 64-bit Wine prefix. This replacement uses a 32-bit
-prefix. Changing WINEARCH does not convert an existing prefix.
+Then in ADS:
 
-Back up `serverfiles`, then either:
+1. Open **Configuration > Instance Deployment**.
+2. Fetch `champeau87/amp-halo-sapp:main`.
+3. Refresh the AMP web interface.
+4. Create a new **Halo Custom Edition (SAPP)** instance.
+5. Enable containerization.
+6. Run **Update**.
+7. Check File Manager for `haloceded.exe` and `cg/init.txt`.
+8. Start the instance.
 
-- create a fresh instance; or
-- stop the instance and remove the instance's `halo-ce/.wine` directory before
-  starting it again.
+## Use a fresh instance
 
-Do not remove `serverfiles`.
+Earlier module versions used an incorrect launch path and may have created a
+64-bit Wine prefix. This version requires a 32-bit prefix.
 
-## First test
+The safest route is a new AMP instance. To reuse an old instance:
 
-The expected launch command is:
+1. Stop it.
+2. Back up `halo-ce/serverfiles/`.
+3. Delete only `halo-ce/.wine`.
+4. Do not delete `serverfiles`.
+5. Run Update and start again.
 
-    /usr/bin/wine ./haloceded.exe -path . -port 2302
+## First validation
 
-A successful test should:
+AMP should show a launch command equivalent to:
 
-1. keep the process running;
-2. show the Halo/SAPP console output;
-3. respond to `sv_status`;
-4. stop after AMP sends `quit`.
+    /usr/bin/wine ./haloceded.exe -path ./cg -exec ./cg/init.txt -port 2302
 
-## If the process runs but console input does not work
+In the AMP console, test:
 
-Try Wine's terminal console frontend by changing these two KVP lines:
+    sv_status
 
-    App.ExecutableLinux=/usr/bin/wineconsole
-    App.LinuxCommandLineArgs=--backend=curses ./haloceded.exe
+Stopping the instance should send:
 
-Keep `App.CommandLineArgs` unchanged. This is a fallback only; test direct Wine
-first.
+    quit
+
+## Configuration locations
+
+Main Halo startup configuration:
+
+    cg/init.txt
+
+Per-instance SAPP configuration:
+
+    cg/sapp/init.txt
+
+Map cycle and voting:
+
+    cg/sapp/mapcycle.txt
+    cg/sapp/mapvotes.txt
+
+Global SAPP administration and bans:
+
+    sapp/admins.txt
+    sapp/users.txt
+    sapp/ipbans.txt
+
+The current version intentionally leaves AMP's generated configuration panels
+empty. Edit these script-style configuration files through AMP File Manager
+until the basic server, console, and shutdown behavior are proven.
