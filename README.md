@@ -23,21 +23,24 @@ https://github.com/Chalwk/SPCLib/releases/download/sapp-server-templates/SAPP_CE
 The bootstrap download and Wine-prefix initialization are marked `OneShot`.
 They are intended to run once for each new AMP instance.
 
-The archive is extracted into:
+The archive contains a top-level `SAPP_CE` directory, so AMP extracts it as:
 
-    halo-ce/serverfiles/
+    halo-ce/serverfiles/SAPP_CE/
 
 The expected files include:
 
-    haloceded.exe
-    sapp.dll
-    Strings.dll
-    run.bat
-    run.sh
-    cg/init.txt
-    cg/sapp/init.txt
-    maps/
-    sapp/
+    SAPP_CE/haloceded.exe
+    SAPP_CE/sapp.dll
+    SAPP_CE/Strings.dll
+    SAPP_CE/run.bat
+    SAPP_CE/run.sh
+    SAPP_CE/cg/init.txt
+    SAPP_CE/cg/sapp/init.txt
+    SAPP_CE/maps/
+    SAPP_CE/sapp/
+
+AMP deliberately keeps that vendor directory intact. The application's working
+directory is `serverfiles/SAPP_CE`.
 
 ## Startup command
 
@@ -61,7 +64,8 @@ Then in ADS:
 4. Create a new **Halo Custom Edition (SAPP)** instance.
 5. Enable containerization.
 6. Run **Update**.
-7. Check File Manager for `haloceded.exe` and `cg/init.txt`.
+7. Check File Manager for `SAPP_CE/haloceded.exe` and
+   `SAPP_CE/cg/init.txt`.
 8. Start the instance.
 
 ## Use a fresh instance
@@ -79,7 +83,11 @@ The safest route is a new AMP instance. To reuse an old instance:
 
 ## First validation
 
-AMP should show a launch command equivalent to:
+AMP should use this working directory:
+
+    halo-ce/serverfiles/SAPP_CE/
+
+From that directory, it should show a launch command equivalent to:
 
     /usr/bin/wine ./haloceded.exe -path ./cg -exec ./cg/init.txt -port 2302
 
@@ -95,22 +103,22 @@ Stopping the instance should send:
 
 Main Halo startup configuration:
 
-    cg/init.txt
+    SAPP_CE/cg/init.txt
 
 Per-instance SAPP configuration:
 
-    cg/sapp/init.txt
+    SAPP_CE/cg/sapp/init.txt
 
 Map cycle and voting:
 
-    cg/sapp/mapcycle.txt
-    cg/sapp/mapvotes.txt
+    SAPP_CE/cg/sapp/mapcycle.txt
+    SAPP_CE/cg/sapp/mapvotes.txt
 
 Global SAPP administration and bans:
 
-    sapp/admins.txt
-    sapp/users.txt
-    sapp/ipbans.txt
+    SAPP_CE/sapp/admins.txt
+    SAPP_CE/sapp/users.txt
+    SAPP_CE/sapp/ipbans.txt
 
 The current version intentionally leaves AMP's generated configuration panels
 empty. Edit these script-style configuration files through AMP File Manager
