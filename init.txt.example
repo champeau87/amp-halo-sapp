@@ -1,0 +1,9 @@
+sv_name "AMP Halo CE Server"
+sv_maxplayers 16
+sv_public 1
+sv_mapcycle_timeout 3
+sv_rcon_password changeMe
+load
+
+sv_mapcycle_add bloodgulch slayer
+sv_mapcycle_begin

@@ -1,10 +1,11 @@
 {
-    "id": "4973f520-b5e4-4f0d-8098-0c8ac92e384b",
-    "authors": [
-        " - Made with AMP Config Generator"
-    ],
-    "origin": "https://github.com/ - Made with AMP Config Generator/AMPTemplates.git",
-    "url": "https://github.com/ - Made with AMP Config Generator/AMPTemplates",
-    "imagefile": "",
-    "prefix": " - Made with AMP Config Generator"
+  "id": "4973f520-b5e4-4f0d-8098-0c8ac92e384b",
+  "authors": [
+    "Ben Champeau"
+  ],
+  "origin": "https://github.com/champeau87/amp-halo-sapp.git",
+  "url": "https://github.com/champeau87/amp-halo-sapp",
+  "imagefile": "",
+  "prefix": "",
+  "repotype": "AppTemplates"
 }
