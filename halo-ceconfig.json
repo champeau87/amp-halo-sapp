@@ -16,7 +16,7 @@
   {
     "DisplayName": "Maximum Players",
     "Category": "Halo Server",
-    "Description": "Maximum number of players allowed on the server. Halo CE supports up to 16.",
+    "Description": "Maximum players allowed on the server (1\u201316). Written to SAPP_CE/cg/init.txt as sv_maxplayers.",
     "Keywords": "players,slots,max",
     "FieldName": "$MaxUsers",
     "InputType": "number",
@@ -32,7 +32,7 @@
   {
     "DisplayName": "Public Server",
     "Category": "Halo Server",
-    "Description": "Advertise the server in the public Halo Custom Edition server browser.",
+    "Description": "Advertise the server in the public Halo CE server browser. Written to SAPP_CE/cg/init.txt as sv_public 1 or 0.",
     "Keywords": "public,listing,browser",
     "FieldName": "PublicServer",
     "InputType": "checkbox",

@@ -1,34 +1,77 @@
 [
   {
     "ConfigFile": "SAPP_CE/cg/init.txt",
-    "AutoMap": true,
+    "AutoMap": false,
     "Importable": true,
     "ConfigType": "kvp",
     "ConfigFormat": "{0} \"{1}\"",
-    "ConfigFormatRegex": "^\\s*(?<key>sv_name)\\s+\"(?<value>.*?)\"\\s*\\r?$"
+    "ConfigFormatRegex": "^\\s*(?<key>sv_name)\\s+\\\"(?<value>.*?)\\\"\\s*(?:;.*)?\\r?$",
+    "Subsections": [
+      {
+        "Heading": "$root",
+        "SettingMappings": {
+          "sv_name": "ServerName"
+        }
+      }
+    ]
   },
   {
     "ConfigFile": "SAPP_CE/cg/init.txt",
-    "AutoMap": true,
+    "AutoMap": false,
     "Importable": true,
     "ConfigType": "kvp",
     "ConfigFormat": "{0} {1}",
-    "ConfigFormatRegex": "^\\s*(?<key>sv_rcon_password)\\s+(?<value>\\S*)\\s*\\r?$"
+    "ConfigFormatRegex": "^\\s*(?<key>sv_rcon_password)\\s+(?<value>\\S*)\\s*(?:;.*)?\\r?$",
+    "Subsections": [
+      {
+        "Heading": "$root",
+        "SettingMappings": {
+          "sv_rcon_password": "$RemoteAdminPassword"
+        }
+      }
+    ]
   },
   {
     "ConfigFile": "SAPP_CE/cg/init.txt",
-    "AutoMap": true,
+    "AutoMap": false,
     "Importable": true,
     "ConfigType": "kvp",
     "ConfigFormat": "{0} {1}",
-    "ConfigFormatRegex": "^\\s*(?<key>sv_maxplayers|sv_public|sv_mapcycle_timeout)\\s+(?<value>-?\\d+)\\s*\\r?$"
+    "ConfigFormatRegex": "^\\s*(?<key>sv_maxplayers|sv_public|sv_mapcycle_timeout)\\s+(?<value>-?\\d+)\\s*(?:;.*)?\\r?$",
+    "Subsections": [
+      {
+        "Heading": "$root",
+        "SettingMappings": {
+          "sv_maxplayers": "$MaxUsers",
+          "sv_public": "PublicServer",
+          "sv_mapcycle_timeout": "MapcycleTimeout"
+        }
+      }
+    ]
   },
   {
     "ConfigFile": "SAPP_CE/cg/sapp/init.txt",
-    "AutoMap": true,
+    "AutoMap": false,
     "Importable": true,
     "ConfigType": "kvp",
     "ConfigFormat": "{0} {1}",
-    "ConfigFormatRegex": "^\\s*(?<key>no_lead|console_input|sapp_console|chat_console_echo|sapp_mapcycle|mapvote|antispam|afk_kick|ping_kick|log)\\s+(?<value>-?\\d+)\\s*(?:;.*)?\\r?$"
+    "ConfigFormatRegex": "^\\s*(?<key>no_lead|console_input|sapp_console|chat_console_echo|sapp_mapcycle|mapvote|antispam|afk_kick|ping_kick|log)\\s+(?<value>-?\\d+)\\s*(?:;.*)?\\r?$",
+    "Subsections": [
+      {
+        "Heading": "$root",
+        "SettingMappings": {
+          "no_lead": "SAPPNoLead",
+          "console_input": "ConsoleInput",
+          "sapp_console": "SAPPConsole",
+          "chat_console_echo": "ChatConsoleEcho",
+          "sapp_mapcycle": "SAPPMapcycle",
+          "mapvote": "MapVote",
+          "antispam": "AntiSpam",
+          "afk_kick": "AFKKick",
+          "ping_kick": "PingKick",
+          "log": "SAPPLogging"
+        }
+      }
+    ]
   }
 ]

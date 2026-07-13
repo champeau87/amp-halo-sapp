@@ -1,84 +1,66 @@
-# AMP Halo Custom Edition + SAPP — PTY Console v7
+# AMP Halo Custom Edition + SAPP — Explicit Config Mapping v8
 
-This release fixes the most likely cause of non-working AMP console input.
+v8 keeps the working PTY console from v7 and fixes configuration-file mapping.
 
-## Why v6 could not accept commands
+## Why this release exists
 
-AMP launched:
+The server-name setting was being written successfully, but the grouped numeric
+settings such as `sv_maxplayers` and `sv_public` were not reliably updating the
+file.
 
-    /usr/bin/wine ./haloceded.exe ...
+v8 replaces the automatic mapping with explicit mappings:
 
-Wine could produce output through ordinary pipes, but Halo's old Windows console
-did not receive a usable interactive terminal/input handle. As a result:
+    sv_name             -> ServerName
+    sv_maxplayers       -> $MaxUsers
+    sv_public           -> PublicServer
+    sv_mapcycle_timeout -> MapcycleTimeout
+    sv_rcon_password    -> $RemoteAdminPassword
 
-- commands entered in AMP did not reach Halo;
-- AMP's `quit` shutdown command did not reach Halo;
-- AMP waited for `App.ExitTimeout=30`;
-- AMP then force-stopped the process.
+The parser also accepts trailing `; comments` and extra whitespace.
 
-## New launcher
+## Correct files
 
-v7 launches through the util-linux `script` command:
+Halo startup settings are written to:
 
-    /usr/bin/script -qefc       "/usr/bin/wine ./haloceded.exe -path ./cg -exec ./cg/init.txt -port 2302"       /dev/null
+    SAPP_CE/cg/init.txt
 
-`script` allocates a pseudo-terminal and relays AMP's stdin and stdout through
-it. It is not being used to save a transcript; `/dev/null` discards that file.
-
-Options:
-
-- `-q`: suppress script's own start/stop messages
-- `-e`: return the child process exit code
-- `-f`: flush output promptly
-- `-c`: run the supplied command
-
-## Additional managed setting
-
-AMP now exposes:
-
-    Accept Console Commands
-
-This writes:
-
-    console_input 1
-
-to:
+SAPP-specific settings are written to:
 
     SAPP_CE/cg/sapp/init.txt
 
-## Applying v7
+`sv_maxplayers` and `sv_public` do not belong in the SAPP init file.
+
+## Test procedure
 
 1. Stop the server.
 2. Back up:
    - `SAPP_CE/cg/init.txt`
    - `SAPP_CE/cg/sapp/init.txt`
-3. Replace the repository files with the v7 files.
-4. Push to `main`.
-5. Fetch `champeau87/amp-halo-sapp:main` in ADS.
-6. Apply the updated template to the Halo instance.
-7. Confirm **Accept Console Commands** is enabled.
-8. Start the server.
+3. Install/fetch the v8 template.
+4. Apply the updated template to the existing instance.
+5. Set:
+   - Maximum Players: `8`
+   - Public Server: `Off`
+6. Save the settings.
+7. Before starting the server, open:
 
-## Validation
+       SAPP_CE/cg/init.txt
 
-In AMP Console, run:
+8. Confirm that it contains:
 
-    sv_status
+       sv_maxplayers 8
+       sv_public 0
 
-Then run:
+9. Start the server.
+10. In AMP Console, query the live values:
 
-    v
+       sv_maxplayers
+       sv_public
 
-Finally click Stop.
+11. Restore the desired production values after the test.
 
-Success means:
+## Expected restart behavior
 
-- commands produce responses;
-- Stop shuts down within a few seconds instead of waiting 30 seconds;
-- the server process exits without AMP force-killing it.
-
-## Fallback
-
-If startup fails with `/usr/bin/script: No such file or directory`, the AMP Wine
-image lacks util-linux's `script` binary. That is unlikely, but in that case the
-template will need either an extra container package or a small custom image.
+These are startup-file settings. AMP writes the file when settings are saved,
+but the running Halo process will not use the new values until the server is
+restarted, unless the commands are also entered manually in the live console.
