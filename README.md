@@ -1,66 +1,101 @@
-# AMP Halo Custom Edition + SAPP — Explicit Config Mapping v8
+# AMP Halo Custom Edition + SAPP — Safe Templates v9
 
-v8 keeps the working PTY console from v7 and fixes configuration-file mapping.
+v9 fixes a destructive configuration bug in v8.
 
-## Why this release exists
+## What went wrong in v8
 
-The server-name setting was being written successfully, but the grouped numeric
-settings such as `sv_maxplayers` and `sv_public` were not reliably updating the
-file.
+`SAPP_CE/cg/init.txt` was declared multiple times in the metaconfig. AMP treated
+each declaration as a writer for the whole target file. The final declaration
+contained only:
 
-v8 replaces the automatic mapping with explicit mappings:
+    sv_maxplayers
+    sv_public
+    sv_mapcycle_timeout
 
-    sv_name             -> ServerName
-    sv_maxplayers       -> $MaxUsers
-    sv_public           -> PublicServer
-    sv_mapcycle_timeout -> MapcycleTimeout
-    sv_rcon_password    -> $RemoteAdminPassword
+so the other lines were removed.
 
-The parser also accepts trailing `; comments` and extra whitespace.
+## Immediate recovery
 
-## Correct files
+Before restarting, restore `SAPP_CE/cg/init.txt` to at least:
 
-Halo startup settings are written to:
+    sv_name "Your Server Name"
+    sv_maxplayers 8
+    sv_public 0
+    sv_mapcycle_timeout 3
+    sv_rcon_password ChangeMe
+
+    load
+    mapcycle_begin
+
+Replace the name and password with your real values.
+
+## v9 design
+
+There is now exactly one AMP template owner for each generated file:
 
     SAPP_CE/cg/init.txt
-
-SAPP-specific settings are written to:
-
     SAPP_CE/cg/sapp/init.txt
 
-`sv_maxplayers` and `sv_public` do not belong in the SAPP init file.
+The source templates are:
 
-## Test procedure
+    AMP_init.txt
+    AMP_sapp_init.txt
 
-1. Stop the server.
-2. Back up:
+AMP downloads those source templates from this GitHub repository during Update,
+then expands `{{SettingName}}` placeholders into the two target files.
+
+The repository therefore must contain:
+
+    halo-ce-AMP-init.txt
+    halo-ce-AMP-sapp-init.txt
+
+in addition to the normal module files.
+
+## Required fixed Halo commands
+
+The generated Halo init always retains:
+
+    load
+    mapcycle_begin
+
+`load` activates SAPP. `mapcycle_begin` starts the packaged SAPP map cycle.
+
+## Custom commands
+
+The AMP GUI now includes:
+
+- Additional Halo Startup Commands
+- Additional SAPP Commands
+
+Use those fields for commands not yet represented by dedicated AMP controls.
+Do not hand-edit the generated target files because AMP will regenerate them.
+
+## Apply v9
+
+1. While the server is stopped, manually repair `SAPP_CE/cg/init.txt` using the
+   recovery content above.
+2. Replace the GitHub repository files with all files from this package.
+3. Push to `main`.
+4. Fetch `champeau87/amp-halo-sapp:main` in ADS.
+5. Apply the updated template to the Halo instance.
+6. Run the instance's **Update** action so AMP downloads:
+   - `AMP_init.txt`
+   - `AMP_sapp_init.txt`
+7. Open the settings page and save once.
+8. Inspect:
    - `SAPP_CE/cg/init.txt`
    - `SAPP_CE/cg/sapp/init.txt`
-3. Install/fetch the v8 template.
-4. Apply the updated template to the existing instance.
-5. Set:
-   - Maximum Players: `8`
-   - Public Server: `Off`
-6. Save the settings.
-7. Before starting the server, open:
+9. Confirm `load` and `mapcycle_begin` remain before starting.
 
-       SAPP_CE/cg/init.txt
+## Expected Halo init
 
-8. Confirm that it contains:
+After saving, it should resemble:
 
-       sv_maxplayers 8
-       sv_public 0
+    sv_name "AMP Halo CE Server"
+    sv_maxplayers 8
+    sv_public 0
+    sv_mapcycle_timeout 3
+    sv_rcon_password ChangeMe
 
-9. Start the server.
-10. In AMP Console, query the live values:
-
-       sv_maxplayers
-       sv_public
-
-11. Restore the desired production values after the test.
-
-## Expected restart behavior
-
-These are startup-file settings. AMP writes the file when settings are saved,
-but the running Halo process will not use the new values until the server is
-restarted, unless the commands are also entered manually in the live console.
+    load
+    mapcycle_begin

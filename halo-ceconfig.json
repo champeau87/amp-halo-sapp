@@ -76,6 +76,19 @@
     "EnumValues": {}
   },
   {
+    "DisplayName": "Additional Halo Startup Commands",
+    "Category": "Halo Server",
+    "Description": "Optional extra Halo commands appended after load and mapcycle_begin in SAPP_CE/cg/init.txt. Enter one command per line.",
+    "Keywords": "halo,commands,advanced,init",
+    "FieldName": "AdditionalHaloCommands",
+    "InputType": "Textarea",
+    "IsFlagArgument": false,
+    "ParamFieldName": "AdditionalHaloCommands",
+    "IncludeInCommandLine": false,
+    "DefaultValue": "",
+    "EnumValues": {}
+  },
+  {
     "DisplayName": "No-Lead",
     "Category": "SAPP Settings",
     "Description": "Enable SAPP no-lead compensation so players do not need to lead targets based on latency.",
@@ -235,5 +248,18 @@
       "False": "0",
       "True": "1"
     }
+  },
+  {
+    "DisplayName": "Additional SAPP Commands",
+    "Category": "SAPP Settings",
+    "Description": "Optional extra commands appended to SAPP_CE/cg/sapp/init.txt. Enter one command per line.",
+    "Keywords": "sapp,commands,advanced,init",
+    "FieldName": "AdditionalSAPPCommands",
+    "InputType": "Textarea",
+    "IsFlagArgument": false,
+    "ParamFieldName": "AdditionalSAPPCommands",
+    "IncludeInCommandLine": false,
+    "DefaultValue": "",
+    "EnumValues": {}
   }
 ]
