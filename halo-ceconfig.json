@@ -1,1 +1,223 @@
-[]
+[
+  {
+    "DisplayName": "Server Name",
+    "Category": "Halo Server",
+    "Description": "Name displayed in the Halo Custom Edition server browser.",
+    "Keywords": "server,name,browser",
+    "FieldName": "ServerName",
+    "InputType": "text",
+    "IsFlagArgument": false,
+    "ParamFieldName": "sv_name",
+    "IncludeInCommandLine": false,
+    "DefaultValue": "AMP Halo CE Server",
+    "Required": true,
+    "EnumValues": {}
+  },
+  {
+    "DisplayName": "Maximum Players",
+    "Category": "Halo Server",
+    "Description": "Maximum number of players allowed on the server. Halo CE supports up to 16.",
+    "Keywords": "players,slots,max",
+    "FieldName": "$MaxUsers",
+    "InputType": "number",
+    "IsFlagArgument": false,
+    "ParamFieldName": "sv_maxplayers",
+    "IncludeInCommandLine": false,
+    "DefaultValue": "16",
+    "minValue": "1",
+    "maxValue": "16",
+    "Required": true,
+    "EnumValues": {}
+  },
+  {
+    "DisplayName": "Public Server",
+    "Category": "Halo Server",
+    "Description": "Advertise the server in the public Halo Custom Edition server browser.",
+    "Keywords": "public,listing,browser",
+    "FieldName": "PublicServer",
+    "InputType": "checkbox",
+    "IsFlagArgument": false,
+    "ParamFieldName": "sv_public",
+    "IncludeInCommandLine": false,
+    "DefaultValue": "1",
+    "EnumValues": {
+      "False": "0",
+      "True": "1"
+    }
+  },
+  {
+    "DisplayName": "Map Cycle Timeout",
+    "Category": "Halo Server",
+    "Description": "Delay in seconds between games.",
+    "Keywords": "map,cycle,timeout,delay",
+    "FieldName": "MapcycleTimeout",
+    "InputType": "number",
+    "IsFlagArgument": false,
+    "ParamFieldName": "sv_mapcycle_timeout",
+    "IncludeInCommandLine": false,
+    "DefaultValue": "3",
+    "minValue": "0",
+    "maxValue": "60",
+    "Suffix": "seconds",
+    "EnumValues": {}
+  },
+  {
+    "DisplayName": "RCON Password",
+    "Category": "Halo Server",
+    "Description": "Halo RCON password. Keep it to 8 characters or fewer and do not use spaces.",
+    "Keywords": "rcon,password,admin",
+    "FieldName": "$RemoteAdminPassword",
+    "InputType": "password",
+    "IsFlagArgument": false,
+    "ParamFieldName": "sv_rcon_password",
+    "IncludeInCommandLine": false,
+    "DefaultValue": "ChangeMe",
+    "Required": true,
+    "EnumValues": {}
+  },
+  {
+    "DisplayName": "No-Lead",
+    "Category": "SAPP Settings",
+    "Description": "Enable SAPP no-lead compensation so players do not need to lead targets based on latency.",
+    "Keywords": "sapp,no lead,latency,ping",
+    "FieldName": "SAPPNoLead",
+    "InputType": "checkbox",
+    "IsFlagArgument": false,
+    "ParamFieldName": "no_lead",
+    "IncludeInCommandLine": false,
+    "DefaultValue": "1",
+    "EnumValues": {
+      "False": "0",
+      "True": "1"
+    }
+  },
+  {
+    "DisplayName": "SAPP Console Mode",
+    "Category": "SAPP Settings",
+    "Description": "Replace periodic sv_status output with more useful SAPP join, leave, and game messages.",
+    "Keywords": "sapp,console,status",
+    "FieldName": "SAPPConsole",
+    "InputType": "checkbox",
+    "IsFlagArgument": false,
+    "ParamFieldName": "sapp_console",
+    "IncludeInCommandLine": false,
+    "DefaultValue": "1",
+    "EnumValues": {
+      "False": "0",
+      "True": "1"
+    }
+  },
+  {
+    "DisplayName": "Show Chat in Console",
+    "Category": "SAPP Settings",
+    "Description": "Echo player chat into AMP's console.",
+    "Keywords": "chat,console,echo",
+    "FieldName": "ChatConsoleEcho",
+    "InputType": "checkbox",
+    "IsFlagArgument": false,
+    "ParamFieldName": "chat_console_echo",
+    "IncludeInCommandLine": false,
+    "DefaultValue": "1",
+    "EnumValues": {
+      "False": "0",
+      "True": "1"
+    }
+  },
+  {
+    "DisplayName": "SAPP Map Cycle",
+    "Category": "Map Cycle",
+    "Description": "Use SAPP's mapcycle.txt instead of the stock Halo map-cycle commands.",
+    "Keywords": "sapp,mapcycle,maps",
+    "FieldName": "SAPPMapcycle",
+    "InputType": "checkbox",
+    "IsFlagArgument": false,
+    "ParamFieldName": "sapp_mapcycle",
+    "IncludeInCommandLine": false,
+    "DefaultValue": "1",
+    "EnumValues": {
+      "False": "0",
+      "True": "1"
+    }
+  },
+  {
+    "DisplayName": "Map Voting",
+    "Category": "Map Cycle",
+    "Description": "Allow players to vote using entries from cg/sapp/mapvotes.txt.",
+    "Keywords": "map,vote,voting",
+    "FieldName": "MapVote",
+    "InputType": "checkbox",
+    "IsFlagArgument": false,
+    "ParamFieldName": "mapvote",
+    "IncludeInCommandLine": false,
+    "DefaultValue": "0",
+    "EnumValues": {
+      "False": "0",
+      "True": "1"
+    }
+  },
+  {
+    "DisplayName": "Chat Anti-Spam",
+    "Category": "SAPP Settings",
+    "Description": "0 disables anti-spam, 1 uses CD-key text bans, and 2 uses IP-based mutes.",
+    "Keywords": "chat,spam,mute",
+    "FieldName": "AntiSpam",
+    "InputType": "enum",
+    "IsFlagArgument": false,
+    "ParamFieldName": "antispam",
+    "IncludeInCommandLine": false,
+    "DefaultValue": "1",
+    "EnumValues": {
+      "0": "Disabled",
+      "1": "CD-key text ban",
+      "2": "IP-based mute"
+    }
+  },
+  {
+    "DisplayName": "AFK Kick Time",
+    "Category": "SAPP Settings",
+    "Description": "Kick inactive players after this many seconds. Set to 0 to disable.",
+    "Keywords": "afk,idle,kick",
+    "FieldName": "AFKKick",
+    "InputType": "number",
+    "IsFlagArgument": false,
+    "ParamFieldName": "afk_kick",
+    "IncludeInCommandLine": false,
+    "DefaultValue": "0",
+    "minValue": "0",
+    "maxValue": "86400",
+    "Suffix": "seconds",
+    "EnumValues": {}
+  },
+  {
+    "DisplayName": "High-Ping Kick Threshold",
+    "Category": "SAPP Settings",
+    "Description": "Kick players above this ping in milliseconds. Set to 0 to disable.",
+    "Keywords": "ping,latency,kick",
+    "FieldName": "PingKick",
+    "InputType": "number",
+    "IsFlagArgument": false,
+    "ParamFieldName": "ping_kick",
+    "IncludeInCommandLine": false,
+    "DefaultValue": "0",
+    "minValue": "0",
+    "maxValue": "9999",
+    "Suffix": "ms",
+    "EnumValues": {}
+  },
+  {
+    "DisplayName": "SAPP Logging",
+    "Category": "SAPP Settings",
+    "Description": "Write SAPP events to its log file.",
+    "Keywords": "sapp,log,logging",
+    "FieldName": "SAPPLogging",
+    "InputType": "checkbox",
+    "IsFlagArgument": false,
+    "ParamFieldName": "log",
+    "IncludeInCommandLine": false,
+    "DefaultValue": "1",
+    "EnumValues": {
+      "False": "0",
+      "True": "1"
+    }
+  }
+]

@@ -1,1 +1,34 @@
-[]
+[
+  {
+    "ConfigFile": "SAPP_CE/cg/init.txt",
+    "AutoMap": true,
+    "Importable": true,
+    "ConfigType": "kvp",
+    "ConfigFormat": "{0} \"{1}\"",
+    "ConfigFormatRegex": "^\\s*(?<key>sv_name)\\s+\"(?<value>.*?)\"\\s*\\r?$"
+  },
+  {
+    "ConfigFile": "SAPP_CE/cg/init.txt",
+    "AutoMap": true,
+    "Importable": true,
+    "ConfigType": "kvp",
+    "ConfigFormat": "{0} {1}",
+    "ConfigFormatRegex": "^\\s*(?<key>sv_rcon_password)\\s+(?<value>\\S*)\\s*\\r?$"
+  },
+  {
+    "ConfigFile": "SAPP_CE/cg/init.txt",
+    "AutoMap": true,
+    "Importable": true,
+    "ConfigType": "kvp",
+    "ConfigFormat": "{0} {1}",
+    "ConfigFormatRegex": "^\\s*(?<key>sv_maxplayers|sv_public|sv_mapcycle_timeout)\\s+(?<value>-?\\d+)\\s*\\r?$"
+  },
+  {
+    "ConfigFile": "SAPP_CE/cg/sapp/init.txt",
+    "AutoMap": true,
+    "Importable": true,
+    "ConfigType": "kvp",
+    "ConfigFormat": "{0} {1}",
+    "ConfigFormatRegex": "^\\s*(?<key>no_lead|sapp_console|chat_console_echo|sapp_mapcycle|mapvote|antispam|afk_kick|ping_kick|log)\\s+(?<value>-?\\d+)\\s*(?:;.*)?\\r?$"
+  }
+]
