@@ -1,101 +1,111 @@
-# AMP Halo Custom Edition + SAPP — Safe Templates v9
+# AMP Halo Custom Edition + SAPP — Package-Aware Settings v10
 
-v9 fixes a destructive configuration bug in v8.
+v10 retains the working pseudo-terminal console from v7 and fixes the settings
+mapping against Chalwk's actual `SAPP_CE.zip` configuration files.
 
-## What went wrong in v8
+## What the pasted files revealed
 
-`SAPP_CE/cg/init.txt` was declared multiple times in the metaconfig. AMP treated
-each declaration as a writer for the whole target file. The final declaration
-contained only:
+The package uses:
 
-    sv_maxplayers
+    sv_public true
+    mapvote false
+    no_lead true
+
+not numeric `1` and `0` values.
+
+It also does not include `sv_maxplayers` in `cg/init.txt`, and several optional
+SAPP settings are absent from `cg/sapp/init.txt`. AMP AutoMap updates existing
+keys; it does not reliably invent missing lines.
+
+## What Update now does
+
+The **Prepare SAPP Configuration for AMP** stage safely adds these only when
+they are missing:
+
+In `SAPP_CE/cg/init.txt`:
+
+    sv_maxplayers 16
+
+In `SAPP_CE/cg/sapp/init.txt`:
+
+    console_input true
+    chat_console_echo true
+    antispam 0
+    afk_kick 0
+    ping_kick 0
+    log false
+
+The existing vendor comments and unmanaged settings are preserved.
+
+## Correct setting locations
+
+`SAPP_CE/cg/init.txt`:
+
+    sv_name
     sv_public
+    sv_rcon_password
+    sv_maxplayers
+
+`SAPP_CE/cg/sapp/init.txt`:
+
     sv_mapcycle_timeout
+    no_lead
+    console_input
+    sapp_console
+    chat_console_echo
+    sapp_mapcycle
+    mapvote
+    antispam
+    afk_kick
+    ping_kick
+    log
 
-so the other lines were removed.
+## Map cycle warning
 
-## Immediate recovery
+SAPP Map Cycle and Map Voting are mutually exclusive. For voting:
 
-Before restarting, restore `SAPP_CE/cg/init.txt` to at least:
+    SAPP Map Cycle: Off
+    Map Voting: On
 
-    sv_name "Your Server Name"
-    sv_maxplayers 8
-    sv_public 0
-    sv_mapcycle_timeout 3
-    sv_rcon_password ChangeMe
+For automatic rotation:
 
-    load
-    mapcycle_begin
+    SAPP Map Cycle: On
+    Map Voting: Off
 
-Replace the name and password with your real values.
+## Apply v10
 
-## v9 design
-
-There is now exactly one AMP template owner for each generated file:
-
-    SAPP_CE/cg/init.txt
-    SAPP_CE/cg/sapp/init.txt
-
-The source templates are:
-
-    AMP_init.txt
-    AMP_sapp_init.txt
-
-AMP downloads those source templates from this GitHub repository during Update,
-then expands `{{SettingName}}` placeholders into the two target files.
-
-The repository therefore must contain:
-
-    halo-ce-AMP-init.txt
-    halo-ce-AMP-sapp-init.txt
-
-in addition to the normal module files.
-
-## Required fixed Halo commands
-
-The generated Halo init always retains:
-
-    load
-    mapcycle_begin
-
-`load` activates SAPP. `mapcycle_begin` starts the packaged SAPP map cycle.
-
-## Custom commands
-
-The AMP GUI now includes:
-
-- Additional Halo Startup Commands
-- Additional SAPP Commands
-
-Use those fields for commands not yet represented by dedicated AMP controls.
-Do not hand-edit the generated target files because AMP will regenerate them.
-
-## Apply v9
-
-1. While the server is stopped, manually repair `SAPP_CE/cg/init.txt` using the
-   recovery content above.
-2. Replace the GitHub repository files with all files from this package.
-3. Push to `main`.
-4. Fetch `champeau87/amp-halo-sapp:main` in ADS.
-5. Apply the updated template to the Halo instance.
-6. Run the instance's **Update** action so AMP downloads:
-   - `AMP_init.txt`
-   - `AMP_sapp_init.txt`
-7. Open the settings page and save once.
-8. Inspect:
+1. Stop the Halo instance.
+2. Back up:
    - `SAPP_CE/cg/init.txt`
    - `SAPP_CE/cg/sapp/init.txt`
-9. Confirm `load` and `mapcycle_begin` remain before starting.
+3. Replace all repository module files with v10 and push to `main`.
+4. Fetch `champeau87/amp-halo-sapp:main` in ADS.
+5. Apply the updated template to the existing instance.
+6. Run the instance **Update** action once.
+7. Reopen the Halo Server settings, set the desired values, and save.
+8. Inspect both init files before starting.
 
-## Expected Halo init
+## Expected result for the current test
 
-After saving, it should resemble:
+With:
 
-    sv_name "AMP Halo CE Server"
+    Server Name: terst
+    Maximum Players: 8
+    Public Server: Off
+    RCON Password: party
+    SAPP Map Cycle: Off
+    Map Voting: On
+
+`SAPP_CE/cg/init.txt` should contain:
+
+    sv_name "terst"
+    sv_public false
+    sv_rcon_password "party"
     sv_maxplayers 8
-    sv_public 0
-    sv_mapcycle_timeout 3
-    sv_rcon_password ChangeMe
 
-    load
-    mapcycle_begin
+`SAPP_CE/cg/sapp/init.txt` should contain:
+
+    sapp_mapcycle false
+    mapvote true
+
+The rest of the vendor configuration should remain in place.

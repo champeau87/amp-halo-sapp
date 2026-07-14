@@ -3,14 +3,40 @@
     "ConfigFile": "SAPP_CE/cg/init.txt",
     "AutoMap": true,
     "Importable": true,
-    "ConfigType": "template",
-    "ConfigFileTemplate": "./AMP_init.txt"
+    "ConfigType": "kvp",
+    "ConfigFormat": "{0} \"{1}\"",
+    "ConfigFormatRegex": "^\\s*(?<key>sv_name|sv_rcon_password)\\s+\\\"(?<value>.*?)\\\"\\s*(?:;.*)?\\r?$"
+  },
+  {
+    "ConfigFile": "SAPP_CE/cg/init.txt",
+    "AutoMap": true,
+    "Importable": true,
+    "ConfigType": "kvp",
+    "ConfigFormat": "{0} {1}",
+    "ConfigFormatRegex": "^\\s*(?<key>sv_public)\\s+(?<value>true|false)\\s*(?:;.*)?\\r?$"
+  },
+  {
+    "ConfigFile": "SAPP_CE/cg/init.txt",
+    "AutoMap": true,
+    "Importable": true,
+    "ConfigType": "kvp",
+    "ConfigFormat": "{0} {1}",
+    "ConfigFormatRegex": "^\\s*(?<key>sv_maxplayers)\\s+(?<value>\\d+)\\s*(?:;.*)?\\r?$"
   },
   {
     "ConfigFile": "SAPP_CE/cg/sapp/init.txt",
     "AutoMap": true,
     "Importable": true,
-    "ConfigType": "template",
-    "ConfigFileTemplate": "./AMP_sapp_init.txt"
+    "ConfigType": "kvp",
+    "ConfigFormat": "{0} {1}",
+    "ConfigFormatRegex": "^\\s*(?<key>no_lead|console_input|sapp_console|chat_console_echo|sapp_mapcycle|mapvote|log)\\s+(?<value>true|false)\\s*(?:;.*)?\\r?$"
+  },
+  {
+    "ConfigFile": "SAPP_CE/cg/sapp/init.txt",
+    "AutoMap": true,
+    "Importable": true,
+    "ConfigType": "kvp",
+    "ConfigFormat": "{0} {1}",
+    "ConfigFormatRegex": "^\\s*(?<key>sv_mapcycle_timeout|antispam|afk_kick|ping_kick)\\s+(?<value>-?\\d+)\\s*(?:;.*)?\\r?$"
   }
 ]

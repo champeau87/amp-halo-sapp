@@ -2,7 +2,7 @@
   {
     "DisplayName": "Server Name",
     "Category": "Halo Server",
-    "Description": "Name displayed in the Halo Custom Edition server browser.",
+    "Description": "Name displayed in the Halo Custom Edition server browser. Written to SAPP_CE/cg/init.txt.",
     "Keywords": "server,name,browser",
     "FieldName": "ServerName",
     "InputType": "text",
@@ -16,7 +16,7 @@
   {
     "DisplayName": "Maximum Players",
     "Category": "Halo Server",
-    "Description": "Maximum players allowed on the server (1\u201316). Written to SAPP_CE/cg/init.txt as sv_maxplayers.",
+    "Description": "Maximum number of players allowed on the server (1\u201316). AMP adds sv_maxplayers to SAPP_CE/cg/init.txt if the package does not contain it.",
     "Keywords": "players,slots,max",
     "FieldName": "$MaxUsers",
     "InputType": "number",
@@ -32,30 +32,30 @@
   {
     "DisplayName": "Public Server",
     "Category": "Halo Server",
-    "Description": "Advertise the server in the public Halo CE server browser. Written to SAPP_CE/cg/init.txt as sv_public 1 or 0.",
+    "Description": "Advertise the server in the public Halo Custom Edition server browser. Written as sv_public true or false.",
     "Keywords": "public,listing,browser",
     "FieldName": "PublicServer",
     "InputType": "checkbox",
     "IsFlagArgument": false,
     "ParamFieldName": "sv_public",
     "IncludeInCommandLine": false,
-    "DefaultValue": "1",
+    "DefaultValue": "true",
     "EnumValues": {
-      "False": "0",
-      "True": "1"
+      "False": "false",
+      "True": "true"
     }
   },
   {
     "DisplayName": "Map Cycle Timeout",
-    "Category": "Halo Server",
-    "Description": "Delay in seconds between games.",
+    "Category": "Map Cycle",
+    "Description": "Delay in seconds before SAPP switches maps. Written to SAPP_CE/cg/sapp/init.txt.",
     "Keywords": "map,cycle,timeout,delay",
     "FieldName": "MapcycleTimeout",
     "InputType": "number",
     "IsFlagArgument": false,
     "ParamFieldName": "sv_mapcycle_timeout",
     "IncludeInCommandLine": false,
-    "DefaultValue": "3",
+    "DefaultValue": "10",
     "minValue": "0",
     "maxValue": "60",
     "Suffix": "seconds",
@@ -64,28 +64,15 @@
   {
     "DisplayName": "RCON Password",
     "Category": "Halo Server",
-    "Description": "Halo RCON password. Keep it to 8 characters or fewer and do not use spaces.",
+    "Description": "Halo RCON password, written as a quoted value in SAPP_CE/cg/init.txt. Halo RCON passwords should be 8 characters or fewer.",
     "Keywords": "rcon,password,admin",
     "FieldName": "$RemoteAdminPassword",
     "InputType": "password",
     "IsFlagArgument": false,
     "ParamFieldName": "sv_rcon_password",
     "IncludeInCommandLine": false,
-    "DefaultValue": "ChangeMe",
-    "Required": true,
-    "EnumValues": {}
-  },
-  {
-    "DisplayName": "Additional Halo Startup Commands",
-    "Category": "Halo Server",
-    "Description": "Optional extra Halo commands appended after load and mapcycle_begin in SAPP_CE/cg/init.txt. Enter one command per line.",
-    "Keywords": "halo,commands,advanced,init",
-    "FieldName": "AdditionalHaloCommands",
-    "InputType": "Textarea",
-    "IsFlagArgument": false,
-    "ParamFieldName": "AdditionalHaloCommands",
-    "IncludeInCommandLine": false,
     "DefaultValue": "",
+    "Required": false,
     "EnumValues": {}
   },
   {
@@ -98,10 +85,10 @@
     "IsFlagArgument": false,
     "ParamFieldName": "no_lead",
     "IncludeInCommandLine": false,
-    "DefaultValue": "1",
+    "DefaultValue": "true",
     "EnumValues": {
-      "False": "0",
-      "True": "1"
+      "False": "false",
+      "True": "true"
     }
   },
   {
@@ -114,10 +101,10 @@
     "IsFlagArgument": false,
     "ParamFieldName": "console_input",
     "IncludeInCommandLine": false,
-    "DefaultValue": "1",
+    "DefaultValue": "true",
     "EnumValues": {
-      "False": "0",
-      "True": "1"
+      "False": "false",
+      "True": "true"
     }
   },
   {
@@ -130,10 +117,10 @@
     "IsFlagArgument": false,
     "ParamFieldName": "sapp_console",
     "IncludeInCommandLine": false,
-    "DefaultValue": "1",
+    "DefaultValue": "true",
     "EnumValues": {
-      "False": "0",
-      "True": "1"
+      "False": "false",
+      "True": "true"
     }
   },
   {
@@ -146,42 +133,42 @@
     "IsFlagArgument": false,
     "ParamFieldName": "chat_console_echo",
     "IncludeInCommandLine": false,
-    "DefaultValue": "1",
+    "DefaultValue": "true",
     "EnumValues": {
-      "False": "0",
-      "True": "1"
+      "False": "false",
+      "True": "true"
     }
   },
   {
     "DisplayName": "SAPP Map Cycle",
     "Category": "Map Cycle",
-    "Description": "Use SAPP's mapcycle.txt instead of the stock Halo map-cycle commands.",
+    "Description": "Enable SAPP's automatic map cycle. Turn this OFF when Map Voting is ON; the two systems are mutually exclusive.",
     "Keywords": "sapp,mapcycle,maps",
     "FieldName": "SAPPMapcycle",
     "InputType": "checkbox",
     "IsFlagArgument": false,
     "ParamFieldName": "sapp_mapcycle",
     "IncludeInCommandLine": false,
-    "DefaultValue": "1",
+    "DefaultValue": "true",
     "EnumValues": {
-      "False": "0",
-      "True": "1"
+      "False": "false",
+      "True": "true"
     }
   },
   {
     "DisplayName": "Map Voting",
     "Category": "Map Cycle",
-    "Description": "Allow players to vote using entries from cg/sapp/mapvotes.txt.",
+    "Description": "Enable SAPP map voting. Turn SAPP Map Cycle OFF when this is ON; the two systems are mutually exclusive.",
     "Keywords": "map,vote,voting",
     "FieldName": "MapVote",
     "InputType": "checkbox",
     "IsFlagArgument": false,
     "ParamFieldName": "mapvote",
     "IncludeInCommandLine": false,
-    "DefaultValue": "0",
+    "DefaultValue": "false",
     "EnumValues": {
-      "False": "0",
-      "True": "1"
+      "False": "false",
+      "True": "true"
     }
   },
   {
@@ -194,7 +181,7 @@
     "IsFlagArgument": false,
     "ParamFieldName": "antispam",
     "IncludeInCommandLine": false,
-    "DefaultValue": "1",
+    "DefaultValue": "0",
     "EnumValues": {
       "0": "Disabled",
       "1": "CD-key text ban",
@@ -236,30 +223,17 @@
   {
     "DisplayName": "SAPP Logging",
     "Category": "SAPP Settings",
-    "Description": "Write SAPP events to its log file.",
+    "Description": "Write SAPP events to its log file. Written as log true or false.",
     "Keywords": "sapp,log,logging",
     "FieldName": "SAPPLogging",
     "InputType": "checkbox",
     "IsFlagArgument": false,
     "ParamFieldName": "log",
     "IncludeInCommandLine": false,
-    "DefaultValue": "1",
+    "DefaultValue": "false",
     "EnumValues": {
-      "False": "0",
-      "True": "1"
+      "False": "false",
+      "True": "true"
     }
-  },
-  {
-    "DisplayName": "Additional SAPP Commands",
-    "Category": "SAPP Settings",
-    "Description": "Optional extra commands appended to SAPP_CE/cg/sapp/init.txt. Enter one command per line.",
-    "Keywords": "sapp,commands,advanced,init",
-    "FieldName": "AdditionalSAPPCommands",
-    "InputType": "Textarea",
-    "IsFlagArgument": false,
-    "ParamFieldName": "AdditionalSAPPCommands",
-    "IncludeInCommandLine": false,
-    "DefaultValue": "",
-    "EnumValues": {}
   }
 ]

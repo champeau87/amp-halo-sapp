@@ -8,8 +8,7 @@
     "UnzipUpdateSource": true,
     "OverwriteExistingFiles": false,
     "DeleteAfterExtract": true,
-    "SkipOnFailure": false,
-    "OneShot": true
+    "SkipOnFailure": false
   },
   {
     "UpdateStageName": "Initialize 32-bit Wine Prefix",
@@ -17,27 +16,14 @@
     "UpdateSource": "Executable",
     "UpdateSourceData": "/bin/bash",
     "UpdateSourceArgs": "-c \"WINEPREFIX=\\\"{{$FullRootDir}}.wine\\\" WINEARCH=win32 WINEDEBUG=-all /usr/bin/wineboot --init\"",
-    "SkipOnFailure": false,
-    "OneShot": true
-  },
-  {
-    "UpdateStageName": "Download AMP Halo Init Template",
-    "UpdateSourcePlatform": "All",
-    "UpdateSource": "FetchURL",
-    "UpdateSourceData": "https://raw.githubusercontent.com/champeau87/amp-halo-sapp/main/halo-ce-AMP-init.txt",
-    "UpdateSourceArgs": "AMP_init.txt",
-    "UpdateSourceTarget": "{{$FullBaseDir}}",
-    "OverwriteExistingFiles": true,
     "SkipOnFailure": false
   },
   {
-    "UpdateStageName": "Download AMP SAPP Init Template",
-    "UpdateSourcePlatform": "All",
-    "UpdateSource": "FetchURL",
-    "UpdateSourceData": "https://raw.githubusercontent.com/champeau87/amp-halo-sapp/main/halo-ce-AMP-sapp-init.txt",
-    "UpdateSourceArgs": "AMP_sapp_init.txt",
-    "UpdateSourceTarget": "{{$FullBaseDir}}",
-    "OverwriteExistingFiles": true,
+    "UpdateStageName": "Prepare SAPP Configuration for AMP",
+    "UpdateSourcePlatform": "Linux",
+    "UpdateSource": "Executable",
+    "UpdateSourceData": "/bin/bash",
+    "UpdateSourceArgs": "-c \"set -e\\nhalo=\\\"{{$FullBaseDir}}SAPP_CE/cg/init.txt\\\"\\nsapp=\\\"{{$FullBaseDir}}SAPP_CE/cg/sapp/init.txt\\\"\\n\\ntest -f \\\"$halo\\\"\\ntest -f \\\"$sapp\\\"\\n\\nif ! grep -Eq '^[[:space:]]*sv_maxplayers[[:space:]]+' \\\"$halo\\\"; then\\n  sed -i '/^[[:space:]]*load[[:space:]]*$/i sv_maxplayers 16\\\\\\n' \\\"$halo\\\"\\nfi\\n\\nappend_if_missing() {\\n  file=\\\"$1\\\"\\n  key=\\\"$2\\\"\\n  line=\\\"$3\\\"\\n  if ! grep -Eq \\\"^[[:space:]]*${key}[[:space:]]+\\\" \\\"$file\\\"; then\\n    printf '\\\\n%s\\\\n' \\\"$line\\\" >> \\\"$file\\\"\\n  fi\\n}\\n\\nappend_if_missing \\\"$sapp\\\" console_input 'console_input true'\\nappend_if_missing \\\"$sapp\\\" chat_console_echo 'chat_console_echo true'\\nappend_if_missing \\\"$sapp\\\" antispam 'antispam 0'\\nappend_if_missing \\\"$sapp\\\" afk_kick 'afk_kick 0'\\nappend_if_missing \\\"$sapp\\\" ping_kick 'ping_kick 0'\\nappend_if_missing \\\"$sapp\\\" log 'log false'\"",
     "SkipOnFailure": false
   }
 ]
