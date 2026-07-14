@@ -1,3 +1,7 @@
+# IMPORTANT: upload these files directly
+
+Use GitHub **Add file > Upload files** and upload the extracted files. Do not copy/paste the KVP contents into GitHub's editor. The included `.gitattributes` keeps the required LF line endings.
+
 # AMP Halo Custom Edition + SAPP — Package-Aware Settings v10
 
 v10 retains the working pseudo-terminal console from v7 and fixes the settings
